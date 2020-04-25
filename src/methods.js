@@ -1,121 +1,132 @@
-const{
+const {
     log,
-    tab
-} = require("./util.js");
+    tab,
+    chalk,
+    clear,
+    readlineSync,
+    welcomeScreen
+} = require("./welcome.js");
 
-var readlineSync = require("readline-sync");
-
-var chalk = require("chalk");
-
-
-
-const name = function(){
-var name = readlineSync.question(chalk.yellowBright("Enter your name here:-"));
-    console.log(chalk.yellowBright("   Hi " + name + "!"));
+const askName = function () {
+    const message = chalk.hex("#295BF9")("\nEnter your name here :- ");
+    return readlineSync.question(message);
 }
 
-
-const menu = function(){
-    var option = readlineSync.question(chalk.cyanBright(tab+"These are the operations you can do:-\n\n\t\t\t1.  ADD(+)\t\t\t\t2.  SUBTRACT(-)\n\t\t\t3.  PRODUCT(*)\t\t\t\t4.  DIVIDE(/)\n\t\t\t5.  SQUARE(x^2)\t\t\t\t6.  CUBE(x^3)\n\t\t\t7.  PERCENTAGE(%)\t\t\t8.  Exit\n\nHit the numeric value as directed:-")); 
-    operations(option);    
+const showMenu = function () {
+    const optionMessage = tab + tab + "\t  Pick a task to perform\n";
+    const optionLine1 = chalk.cyanBright(tab + tab + "1. ADDITION (+)" + tab + "2. SUBTRACT (-)\n");
+    const optionLine2 = chalk.cyanBright(tab + tab + "3. MULTIPLY (x)" + tab + "4. DIVIDE (/)\n");
+    const optionLine3 = chalk.cyanBright(tab + tab + "5. SQUARE (x^2)" + tab + "6. CUBE (x^3)\n");
+    const optionLine4 = chalk.cyanBright(tab + tab + "7. PERCENT (%)" + tab + "0. EXIT (0)\n");
+    log(optionMessage);
+    log(optionLine1 + optionLine2 + optionLine3 + optionLine4);
 }
 
+const getSelectedOption = function () {
+    const questionMessage = chalk.hex("#2180F6")("Hit the numeric value as directed :- ");
+    return readlineSync.questionInt(questionMessage);
+}
 
-const operations = function(option){
-      if(option==1){
-          add();
-          menu();
-      }
-      else if(option==2){
-          subtract();
-          menu();
-      }
-      else if(option==3){
-          multiply();
-          menu();
-      }
-      else if(option==4){
-          divide();
-          menu();
-      }
-      else if(option==5){
-        square();
-        menu();
+const executeOperation = function (option) {
+    switch (option) {
+        case 1: add();
+            break;
+        case 2: subtract();
+            break;
+        case 3: multiply();
+            break;
+        case 4: divide();
+            break;
+        case 5: square();
+            break;
+        case 6: cube();
+            break;
+        case 7: percentage();
+            break;
+        case 0: exit();
+            break;
+        default: log(chalk.redBright("ERROR : Please enter valid choice"));
+            break;
     }
-    else if(option==6){
-        cube();
-        menu();
-    }
-      else if(option==7){
-         percentage();  
-         menu();
-      }
-      else if(option==8){
-          log(chalk.blueBright(tab+ "Thankyou for using this~~~~~~~~~~~~Hope your experience was best"));
-          return;
-      }
-      else{
-          log(chalk.red("ERROR:  Please enter valid choice"));
-          menu();
-      }
-}
- 
-
-const add = function(){
-    var number1 = readlineSync.question(chalk.yellowBright("Enter first number: "));
-    var number2 = readlineSync.question(chalk.yellowBright("Enter second number: "));
-   var sum = (+number1) + (+number2);
-    log(number1 + " + " + number2 + " is "  + sum);
-    }
-
-
-
-const subtract = function(){
-    var number1 = readlineSync.question(chalk.yellowBright("Enter first number: "));
-    var number2 = readlineSync.question(chalk.yellowBright("Enter second number: "));
-   var sub = number1 - number2;
-    log(number1 + " - " + number2 + " is "  + sub);
 }
 
 
-const multiply = function(){
-    var number1 = readlineSync.question(chalk.yellowBright("enter first number: "));
-    var number2 = readlineSync.question(chalk.yellowBright("enter second number: "));
-   var product = number1 * number2;
-    log(number1 + " * " + number2 + " is " + product);
+const add = function () {
+    log("You choosed to perform ADDITION");
+    const number1 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter first number : "));
+    const number2 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter second number : "));
+    const sum = number1 + number2;
+    log(`${number1} + ${number2} = ${chalk.hex("#2EC22E")(sum)}`);
 }
 
 
-const divide = function(){
-    var number1 = readlineSync.question(chalk.yellowBright("Enter first number: "));
-    var number2 = readlineSync.question(chalk.yellowBright("Enter second number: "));
-   var div = number1 / number2;
-    log(number1 + " / " + number2 + " is " + div);
+
+const subtract = function () {
+    log("You choosed to perform SUBTRACTION");
+    const number1 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter first number : "));
+    const number2 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter second number : "));
+    const difference = number1 - number2;
+    log(`${number1} - ${number2} = ${chalk.hex("#2EC22E")(difference)} `);
 }
 
 
-const percentage = function(){
-    var number = readlineSync.question(chalk.yellowBright("Enter the number: "));
-    var howMuchPercent = readlineSync.question(chalk.yellowBright("Enter the percent: "));
-    var  percent = (number*howMuchPercent)/100;
-    log(howMuchPercent +"%" + " of " + number + " is " + percent);
+const multiply = function () {
+    log("You choosed to perform MULTIPLICATION");
+    const number1 = readlineSync.questionInt(chalk.hex("#FFFF1E")("enter first number : "));
+    const number2 = readlineSync.questionInt(chalk.hex("#FFFF1E")("enter second number : "));
+    const product = number1 * number2;
+    log(`${number1} x ${number2} = ${chalk.hex("#2EC22E")(product)} `);
 }
 
-const square = function(){
-    var number = readlineSync.question(chalk.yellowBright("Enter the number: "));
-    var squaredNumber = number * number;
-    log("Square of " + number + " is " + squaredNumber);
+
+const divide = function () {
+    log("You choosed to perform DIVISION");
+    const number1 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter first number: "));
+    const number2 = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter second number: "));
+    const dividedValue = number1 / number2;
+    log(`${number1} / ${number2} = ${chalk.hex("#2EC22E")(dividedValue)}`);
 }
 
-const cube = function(){
-    var number = readlineSync.question(chalk.yellowBright("Enter the number: "));
-    var cubed = number * number * number;
-    log("Cube of " + number + " is " + cubed);
+
+const percentage = function () {
+    log("You choosed to calculate PERCENTAGE");
+    const number = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter total number : "));
+    const howMuchPercent = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter percentage value : "));
+    const percent = (number * howMuchPercent) / 100;
+    log(`${howMuchPercent} % of ${number} = ${chalk.hex("#2EC22E")(percent)}`);
+}
+
+const square = function () {
+    log("You choosed to calculate SQUARE");
+    const number = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter Number : "));
+    const square = number * number;
+    log(`${number}^ 2 = ${chalk.hex("#2EC22E")(square)} `);
+}
+
+const cube = function () {
+    log("You choosed to calculate CUBE");
+    const number = readlineSync.questionInt(chalk.hex("#FFFF1E")("Enter the number: "));
+    const cube = number * number * number;
+    log(`${number}^ 3 = ${chalk.hex("#2EC22E")(cube)} `);
+}
+
+const exit = function () {
+    const exitMessage = chalk.blueBright("Thank you for using this Calculator ~~~~~~~~~~~~ Hope your experience was best");
+    log(exitMessage);
+    readlineSync.keyIn("Press any character key o exit.");
+    process.exit();
 }
 
 module.exports = {
-    name,
-    menu,
+    log,
+    tab,
+    chalk,
+    clear,
+    readlineSync,
+    welcomeScreen,
+    askName,
+    getSelectedOption,
     percentage,
-    operations
+    executeOperation,
+    showMenu
 }

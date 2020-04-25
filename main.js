@@ -1,21 +1,25 @@
-const{
-    name,
-    menu,
-    operations
-    } = require("./src/methods.js");
-
-const{
+const {
     log,
-    tab
-} = require("./src/util.js");
+    chalk,
+    askName,
+    getSelectedOption,
+    welcomeScreen,
+    executeOperation,
+    showMenu
+} = require("./src/methods.js");
 
-const{
-    welcomeScreen 
-} = require("./src/welcome.js");
-
-const start = function(){
-welcomeScreen();
-name();
-const option = menu();
+const start = function () {
+    welcomeScreen();
+    const name = chalk.green(askName());
+    log(`Hi ${name} ,\n`)
+    showMenu();
+    let option = getSelectedOption();
+    while (1) {
+        executeOperation(option);
+        option = getSelectedOption();
+        welcomeScreen();
+        log(`Hi ${name} ,\n`)
+        showMenu();
+    }
 }
 start();
